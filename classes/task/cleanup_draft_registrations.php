@@ -29,14 +29,11 @@
 
 namespace local_ltifederation\task;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Deletes incomplete (draft) enrol_lti_app_registration rows created more than
  * 24 hours ago.  Complete registrations (status=1) are never touched.
  */
 class cleanup_draft_registrations extends \core\task\scheduled_task {
-
     /** Seconds in 24 hours. */
     const MAX_DRAFT_AGE = 86400;
 

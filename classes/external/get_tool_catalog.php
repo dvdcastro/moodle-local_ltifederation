@@ -24,8 +24,6 @@
 
 namespace local_ltifederation\external;
 
-defined('MOODLE_INTERNAL') || die();
-
 use core_external\external_api;
 use core_external\external_function_parameters;
 use core_external\external_multiple_structure;
@@ -37,7 +35,6 @@ use local_ltifederation\catalog_provider;
  * External function to return the LTI 1.3 tool catalog.
  */
 class get_tool_catalog extends external_api {
-
     /**
      * No parameters required.
      *
@@ -88,18 +85,18 @@ class get_tool_catalog extends external_api {
     public static function execute_returns(): external_multiple_structure {
         return new external_multiple_structure(
             new external_single_structure([
-                'id'                 => new external_value(PARAM_INT,  'Tool ID on the provider'),
+                'id'                 => new external_value(PARAM_INT, 'Tool ID on the provider'),
                 'uuid'               => new external_value(PARAM_ALPHANUMEXT, 'Tool UUID'),
                 'name'               => new external_value(PARAM_TEXT, 'Tool name'),
-                'description'        => new external_value(PARAM_RAW,  'Tool description (HTML stripped)'),
+                'description'        => new external_value(PARAM_RAW, 'Tool description (HTML stripped)'),
                 'coursefullname'     => new external_value(PARAM_TEXT, 'Full name of the course the tool belongs to'),
                 'ltiversion'         => new external_value(PARAM_TEXT, 'LTI version string, e.g. LTI-1p3'),
-                'registration_url'   => new external_value(PARAM_URL,  'Dynamic registration URL'),
+                'registration_url'   => new external_value(PARAM_URL, 'Dynamic registration URL'),
                 'registration_token' => new external_value(PARAM_ALPHANUMEXT, 'Unique registration token'),
-                'logo_url'           => new external_value(PARAM_URL,  'Site compact logo URL', VALUE_OPTIONAL, ''),
-                'remotestatus'       => new external_value(PARAM_INT,  '0=active, 1=removed'),
-                'timecreated'        => new external_value(PARAM_INT,  'Unix timestamp when tool was created'),
-                'timemodified'       => new external_value(PARAM_INT,  'Unix timestamp when tool was last modified'),
+                'logo_url'           => new external_value(PARAM_URL, 'Site compact logo URL', VALUE_OPTIONAL, ''),
+                'remotestatus'       => new external_value(PARAM_INT, '0=active, 1=removed'),
+                'timecreated'        => new external_value(PARAM_INT, 'Unix timestamp when tool was created'),
+                'timemodified'       => new external_value(PARAM_INT, 'Unix timestamp when tool was last modified'),
             ])
         );
     }

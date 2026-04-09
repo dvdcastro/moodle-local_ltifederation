@@ -24,8 +24,6 @@
 
 namespace local_ltifederation\task;
 
-defined('MOODLE_INTERNAL') || die();
-
 use local_ltifederation\encryption_helper;
 
 /**
@@ -33,7 +31,6 @@ use local_ltifederation\encryption_helper;
  * into local_ltifed_catalog_cache.
  */
 class sync_tools extends \core\task\adhoc_task {
-
     /**
      * Human-readable task name.
      *
@@ -115,7 +112,7 @@ class sync_tools extends \core\task\adhoc_task {
         mtrace("  Found " . count($tools) . " tool(s).");
 
         // Track remote UUIDs present in this response.
-        $remoteUUIDs = [];
+        $remoteuuids = [];
 
         $now = time();
 
@@ -126,7 +123,7 @@ class sync_tools extends \core\task\adhoc_task {
                 continue;
             }
 
-            $remoteUUIDs[] = $remoteuuid;
+            $remoteuuids[] = $remoteuuid;
 
             // Check if we already have a cache entry for this tool.
             $existing = $DB->get_record('local_ltifed_catalog_cache', [
@@ -164,8 +161,8 @@ class sync_tools extends \core\task\adhoc_task {
         }
 
         // Mark tools no longer in the remote response as remotestatus=1.
-        if (!empty($remoteUUIDs)) {
-            list($notinsql, $notinparams) = $DB->get_in_or_equal($remoteUUIDs, SQL_PARAMS_NAMED, 'uuid', false);
+        if (!empty($remoteuuids)) {
+            [$notinsql, $notinparams] = $DB->get_in_or_equal($remoteuuids, SQL_PARAMS_NAMED, 'uuid', false);
             $DB->execute(
                 "UPDATE {local_ltifed_catalog_cache}
                     SET remotestatus = 1

@@ -24,8 +24,6 @@
 
 namespace local_ltifederation;
 
-defined('MOODLE_INTERNAL') || die();
-
 global $CFG;
 require_once($CFG->dirroot . '/enrol/lti/tests/helper.php');
 
@@ -35,18 +33,21 @@ require_once($CFG->dirroot . '/enrol/lti/tests/helper.php');
  * @covers \local_ltifederation\catalog_provider
  */
 class catalog_provider_test extends \advanced_testcase {
-
     /**
      * Create a minimal enrol_lti_tools record and associated enrolment.
      *
-     * @param \stdClass $course        The course object.
-     * @param string    $ltiversion    LTI version string (e.g. 'LTI-1p3').
-     * @param int       $enrolstatus   Enrolment status: 0=active, 1=disabled.
-     * @param string    $toolname      Name for the enrolment instance.
+     * @param \stdClass $course The course object.
+     * @param string    $ltiversion LTI version string (e.g. 'LTI-1p3').
+     * @param int       $enrolstatus Enrolment status: 0=active, 1=disabled.
+     * @param string    $toolname Name for the enrolment instance.
      * @return int  The new enrol_lti_tools id.
      */
-    private function create_lti_tool(\stdClass $course, string $ltiversion = 'LTI-1p3',
-            int $enrolstatus = 0, string $toolname = 'Test LTI Tool'): int {
+    private function create_lti_tool(
+        \stdClass $course,
+        string $ltiversion = 'LTI-1p3',
+        int $enrolstatus = 0,
+        string $toolname = 'Test LTI Tool'
+    ): int {
         global $DB;
 
         // Create an enrol instance on the course.
@@ -95,7 +96,7 @@ class catalog_provider_test extends \advanced_testcase {
         parent::setUp();
         $this->resetAfterTest(true);
 
-        // mod_lti requires a private key to be set for draft registration creation.
+        // Mod_lti requires a private key to be set for draft registration creation.
         // Generate one if not set.
         if (!get_config('mod_lti', 'privatekey')) {
             $res = openssl_pkey_new(['private_key_bits' => 2048, 'private_key_type' => OPENSSL_KEYTYPE_RSA]);

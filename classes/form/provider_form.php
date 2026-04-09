@@ -24,15 +24,12 @@
 
 namespace local_ltifederation\form;
 
-defined('MOODLE_INTERNAL') || die();
-
 require_once($GLOBALS['CFG']->libdir . '/formslib.php');
 
 /**
  * Form for adding/editing an LTI provider connection.
  */
 class provider_form extends \moodleform {
-
     /**
      * Define the form fields.
      */

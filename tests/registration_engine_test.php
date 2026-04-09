@@ -24,15 +24,12 @@
 
 namespace local_ltifederation;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Test class for registration_engine.
  *
  * @covers \local_ltifederation\registration_engine
  */
 class registration_engine_test extends \advanced_testcase {
-
     /** @var \stdClass Fake provider record used in tests. */
     private \stdClass $provider;
 

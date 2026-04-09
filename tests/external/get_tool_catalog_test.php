@@ -24,8 +24,6 @@
 
 namespace local_ltifederation\external;
 
-defined('MOODLE_INTERNAL') || die();
-
 use core_external\external_api;
 use externallib_advanced_testcase;
 
@@ -38,17 +36,20 @@ require_once($CFG->dirroot . '/webservice/tests/helpers.php');
  * @covers \local_ltifederation\external\get_tool_catalog
  */
 class get_tool_catalog_test extends externallib_advanced_testcase {
-
     /**
      * Helper to create an enrol_lti_tools record.
      *
-     * @param \stdClass $course
-     * @param string    $ltiversion
-     * @param int       $enrolstatus
-     * @param string    $toolname
+     * @param \stdClass $course The course object.
+     * @param string    $ltiversion LTI version string.
+     * @param int       $enrolstatus Enrolment status.
+     * @param string    $toolname Tool name.
      */
-    private function create_lti_tool(\stdClass $course, string $ltiversion = 'LTI-1p3',
-            int $enrolstatus = 0, string $toolname = 'Test Tool'): void {
+    private function create_lti_tool(
+        \stdClass $course,
+        string $ltiversion = 'LTI-1p3',
+        int $enrolstatus = 0,
+        string $toolname = 'Test Tool'
+    ): void {
         global $DB;
 
         $enrolid = $DB->insert_record('enrol', (object) [
@@ -182,7 +183,7 @@ class get_tool_catalog_test extends externallib_advanced_testcase {
         $result = get_tool_catalog::execute();
         $returns = get_tool_catalog::execute_returns();
 
-        // clean_returnvalue will throw if the result doesn't match the declared structure.
+        // Clean_returnvalue will throw if the result doesn't match the declared structure.
         $cleaned = external_api::clean_returnvalue($returns, $result);
         $this->assertNotEmpty($cleaned);
     }

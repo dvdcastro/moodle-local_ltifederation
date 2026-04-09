@@ -28,8 +28,6 @@
 
 namespace local_ltifederation\privacy;
 
-defined('MOODLE_INTERNAL') || die();
-
 use core_privacy\local\metadata\collection;
 
 /**
@@ -43,7 +41,6 @@ use core_privacy\local\metadata\collection;
  * site admin, not individual users.
  */
 class provider implements \core_privacy\local\metadata\provider {
-
     /**
      * Returns metadata about the data this plugin stores.
      *

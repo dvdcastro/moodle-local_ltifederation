@@ -32,7 +32,6 @@ use Behat\Gherkin\Node\TableNode;
  * Custom Behat context class for LTI Federation plugin steps.
  */
 class behat_local_ltifederation extends behat_base {
-
     /**
      * Navigate to the tool catalog page for a named provider.
      *
@@ -51,33 +50,6 @@ class behat_local_ltifederation extends behat_base {
         $url = new moodle_url('/local/ltifederation/admin/tool_catalog.php', ['providerid' => $provider->id]);
         $this->getSession()->visit($this->locate_path($url->out(false)));
         $this->wait_for_pending_js();
-    }
-
-    /**
-     * Create provider connection records directly in the database for testing.
-     *
-     * Accepts a TableNode with columns: label, providerurl, wstoken, autosync.
-     *
-     * Example:
-     *   Given the following "local_ltifederation > providers" exist:
-     *     | label | providerurl | wstoken | autosync |
-     *     | Test  | https://... | tok123  | 0        |
-     *
-     * @Given the following :type exist:
-     *
-     * This step is handled by Moodle's built-in generator infrastructure via
-     * PHPUnit data generators.  The step definition here provides a fallback
-     * for pure Behat contexts where generators are not available.
-     *
-     * @param string    $type       The generator type string (e.g. "local_ltifederation > providers").
-     * @param TableNode $datatable  The table of data to create.
-     */
-    public function the_following_exist(string $type, TableNode $datatable): void {
-        // This step is normally handled by behat_data_generators. We declare it
-        // here as documentation of what the generator supports.  The actual
-        // database creation happens via generator classes in tests/generator/.
-        // If invoked outside the generator context, do nothing (the generator
-        // will have already created the records).
     }
 
     /**

@@ -24,8 +24,6 @@
 
 namespace local_ltifederation;
 
-defined('MOODLE_INTERNAL') || die();
-
 require_once($GLOBALS['CFG']->dirroot . '/mod/lti/locallib.php');
 
 use Firebase\JWT\JWT;
@@ -36,7 +34,6 @@ use mod_lti\local\ltiopenid\registration_helper;
  * Handles server-to-server LTI Dynamic Registration for catalog tools.
  */
 class registration_engine {
-
     /**
      * Minimum seconds between registration attempts for the same cache entry
      * (rate-limiting guard, uses timefetched field as a proxy for last attempt).

@@ -24,15 +24,12 @@
 
 namespace local_ltifederation\task;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Scheduled task that enqueues individual sync_tools adhoc tasks for every
  * provider that has autosync=1.  Duplicates are suppressed by passing
  * $checkforexisting=true to queue_adhoc_task().
  */
 class sync_all_providers extends \core\task\scheduled_task {
-
     /**
      * Human-readable task name.
      *

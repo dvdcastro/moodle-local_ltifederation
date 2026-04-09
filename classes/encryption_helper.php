@@ -26,13 +26,10 @@
 
 namespace local_ltifederation;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Helper to encrypt and decrypt sensitive strings such as web service tokens.
  */
 class encryption_helper {
-
     /** Prefix indicating a value was encrypted with core\encryption. */
     const PREFIX_ENCRYPTED = 'LTIFED_ENC:';
 

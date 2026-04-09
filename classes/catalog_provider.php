@@ -26,8 +26,6 @@
 
 namespace local_ltifederation;
 
-defined('MOODLE_INTERNAL') || die();
-
 use enrol_lti\local\ltiadvantage\repository\application_registration_repository;
 use enrol_lti\local\ltiadvantage\repository\deployment_repository;
 use enrol_lti\local\ltiadvantage\repository\resource_link_repository;
@@ -39,7 +37,6 @@ use enrol_lti\local\ltiadvantage\service\application_registration_service;
  * Provides the LTI tool catalog for this Moodle site.
  */
 class catalog_provider {
-
     /**
      * Get the catalog of published LTI 1.3 tools from this site.
      *

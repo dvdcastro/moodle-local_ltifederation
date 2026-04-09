@@ -24,15 +24,12 @@
 
 namespace local_ltifederation\task;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Test class for sync_all_providers scheduled task.
  *
  * @covers \local_ltifederation\task\sync_all_providers
  */
 class sync_all_providers_test extends \advanced_testcase {
-
     /**
      * Helper: insert a provider record.
      *

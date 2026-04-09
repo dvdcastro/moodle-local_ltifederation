@@ -24,8 +24,6 @@
 
 namespace local_ltifederation\privacy;
 
-defined('MOODLE_INTERNAL') || die();
-
 use core_privacy\local\metadata\collection;
 use core_privacy\local\metadata\types\database_table;
 use core_privacy\local\metadata\types\external_location;
@@ -36,7 +34,6 @@ use core_privacy\local\metadata\types\external_location;
  * @covers \local_ltifederation\privacy\provider
  */
 class provider_test extends \advanced_testcase {
-
     /**
      * Setup: reset before each test.
      */
@@ -72,12 +69,15 @@ class provider_test extends \advanced_testcase {
         $result = provider::get_metadata($collection);
 
         $items = $result->get_collection();
-        $tablenames = array_map(function($item) {
+        $tablenames = array_map(function ($item) {
             return $item->get_name();
         }, $items);
 
-        $this->assertContains('local_ltifed_providers', $tablenames,
-            'Metadata should include the local_ltifed_providers database table.');
+        $this->assertContains(
+            'local_ltifed_providers',
+            $tablenames,
+            'Metadata should include the local_ltifed_providers database table.'
+        );
     }
 
     /**
@@ -88,12 +88,15 @@ class provider_test extends \advanced_testcase {
         $result = provider::get_metadata($collection);
 
         $items = $result->get_collection();
-        $tablenames = array_map(function($item) {
+        $tablenames = array_map(function ($item) {
             return $item->get_name();
         }, $items);
 
-        $this->assertContains('local_ltifed_catalog_cache', $tablenames,
-            'Metadata should include the local_ltifed_catalog_cache database table.');
+        $this->assertContains(
+            'local_ltifed_catalog_cache',
+            $tablenames,
+            'Metadata should include the local_ltifed_catalog_cache database table.'
+        );
     }
 
     /**
@@ -112,8 +115,10 @@ class provider_test extends \advanced_testcase {
             }
         }
 
-        $this->assertTrue($hasexternal,
-            'Metadata should include an external_location entry for remote Moodle provider communication.');
+        $this->assertTrue(
+            $hasexternal,
+            'Metadata should include an external_location entry for remote Moodle provider communication.'
+        );
     }
 
     /**
@@ -123,7 +128,10 @@ class provider_test extends \advanced_testcase {
         $collection = new collection('local_ltifederation');
         $result = provider::get_metadata($collection);
 
-        $this->assertGreaterThanOrEqual(3, count($result->get_collection()),
-            'Metadata collection should have at least 3 items.');
+        $this->assertGreaterThanOrEqual(
+            3,
+            count($result->get_collection()),
+            'Metadata collection should have at least 3 items.'
+        );
     }
 }

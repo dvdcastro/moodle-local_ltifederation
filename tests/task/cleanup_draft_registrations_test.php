@@ -24,15 +24,12 @@
 
 namespace local_ltifederation\task;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Test class for cleanup_draft_registrations scheduled task.
  *
  * @covers \local_ltifederation\task\cleanup_draft_registrations
  */
 class cleanup_draft_registrations_test extends \advanced_testcase {
-
     /**
      * Helper: insert a row into enrol_lti_app_registration.
      *
@@ -72,8 +69,10 @@ class cleanup_draft_registrations_test extends \advanced_testcase {
         $task = new cleanup_draft_registrations();
         $task->execute();
 
-        $this->assertFalse($DB->record_exists('enrol_lti_app_registration', ['id' => $oldid]),
-            'Old draft registration should have been deleted.');
+        $this->assertFalse(
+            $DB->record_exists('enrol_lti_app_registration', ['id' => $oldid]),
+            'Old draft registration should have been deleted.'
+        );
     }
 
     /**
@@ -89,8 +88,10 @@ class cleanup_draft_registrations_test extends \advanced_testcase {
         $task = new cleanup_draft_registrations();
         $task->execute();
 
-        $this->assertTrue($DB->record_exists('enrol_lti_app_registration', ['id' => $recentid]),
-            'Recent draft registration (< 24h) should NOT be deleted.');
+        $this->assertTrue(
+            $DB->record_exists('enrol_lti_app_registration', ['id' => $recentid]),
+            'Recent draft registration (< 24h) should NOT be deleted.'
+        );
     }
 
     /**
@@ -106,8 +107,10 @@ class cleanup_draft_registrations_test extends \advanced_testcase {
         $task = new cleanup_draft_registrations();
         $task->execute();
 
-        $this->assertTrue($DB->record_exists('enrol_lti_app_registration', ['id' => $completeid]),
-            'Complete registration (status=1) should never be deleted regardless of age.');
+        $this->assertTrue(
+            $DB->record_exists('enrol_lti_app_registration', ['id' => $completeid]),
+            'Complete registration (status=1) should never be deleted regardless of age.'
+        );
     }
 
     /**
@@ -128,14 +131,22 @@ class cleanup_draft_registrations_test extends \advanced_testcase {
         $task = new cleanup_draft_registrations();
         $task->execute();
 
-        $this->assertFalse($DB->record_exists('enrol_lti_app_registration', ['id' => $olddraftid]),
-            'Old draft should be deleted.');
-        $this->assertTrue($DB->record_exists('enrol_lti_app_registration', ['id' => $recentdraftid]),
-            'Recent draft should be kept.');
-        $this->assertTrue($DB->record_exists('enrol_lti_app_registration', ['id' => $oldcompleteid]),
-            'Old complete registration should be kept.');
-        $this->assertTrue($DB->record_exists('enrol_lti_app_registration', ['id' => $recentcompleteid]),
-            'Recent complete registration should be kept.');
+        $this->assertFalse(
+            $DB->record_exists('enrol_lti_app_registration', ['id' => $olddraftid]),
+            'Old draft should be deleted.'
+        );
+        $this->assertTrue(
+            $DB->record_exists('enrol_lti_app_registration', ['id' => $recentdraftid]),
+            'Recent draft should be kept.'
+        );
+        $this->assertTrue(
+            $DB->record_exists('enrol_lti_app_registration', ['id' => $oldcompleteid]),
+            'Old complete registration should be kept.'
+        );
+        $this->assertTrue(
+            $DB->record_exists('enrol_lti_app_registration', ['id' => $recentcompleteid]),
+            'Recent complete registration should be kept.'
+        );
     }
 
     /**
