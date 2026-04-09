@@ -1,0 +1,83 @@
+name: Static Analysis
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  phpsyntax:
+    name: PHP Syntax Check
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          coverage: none
+
+      - name: PHP syntax check (php -l) on all PHP files
+        run: |
+          ERROR=0
+          while IFS= read -r -d '' file; do
+            php -l "$file" > /dev/null || ERROR=1
+          done < <(find . -name '*.php' -not -path './.git/*' -print0)
+          exit $ERROR
+
+  codestyle:
+    name: Moodle Code Style (standalone)
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: phpcs
+          coverage: none
+
+      - name: Install Moodle coding standard
+        run: |
+          composer create-project -n --no-dev moodlehq/moodle-cs moodle-cs ^3
+          phpcs --config-set installed_paths $(pwd)/moodle-cs/moodle
+
+      - name: Run PHPCS with Moodle standard
+        run: |
+          phpcs --standard=moodle --extensions=php --encoding=utf-8 \
+            --ignore=vendor/ \
+            .
+
+  version_check:
+    name: version.php validation
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - name: Check version.php exists and has required fields
+        run: |
+          if [ ! -f version.php ]; then
+            echo "ERROR: version.php not found"
+            exit 1
+          fi
+
+          MISSING=0
+          for field in component version requires maturity release; do
+            if ! grep -q "\$plugin->${field}" version.php; then
+              echo "ERROR: version.php is missing required field: \$plugin->${field}"
+              MISSING=1
+            fi
+          done
+
+          if [ $MISSING -eq 0 ]; then
+            echo "version.php OK - all required fields present"
+          fi
+
+          exit $MISSING

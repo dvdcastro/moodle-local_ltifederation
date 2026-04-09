@@ -1,0 +1,58 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - name: Get tag name
+        id: tag
+        run: echo "tag=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+      - name: Build plugin zip
+        run: |
+          PLUGIN_NAME="local_ltifederation"
+          RELEASE_TAG="${{ steps.tag.outputs.tag }}"
+          ZIP_NAME="${PLUGIN_NAME}_${RELEASE_TAG}.zip"
+
+          # Create a clean copy excluding git and CI files.
+          mkdir -p /tmp/build/${PLUGIN_NAME}
+          rsync -av --exclude='.git' --exclude='.github' --exclude='tests/behat' \
+            ./ /tmp/build/${PLUGIN_NAME}/
+
+          cd /tmp/build
+          zip -r "${GITHUB_WORKSPACE}/${ZIP_NAME}" "${PLUGIN_NAME}/"
+          echo "ZIP_NAME=${ZIP_NAME}" >> $GITHUB_ENV
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.tag.outputs.tag }}
+          name: Release ${{ steps.tag.outputs.tag }}
+          body: |
+            ## local_ltifederation ${{ steps.tag.outputs.tag }}
+
+            ### Installation
+            Download the zip below and install via Moodle Site Administration > Plugins > Install plugins,
+            or extract into your Moodle `local/ltifederation/` directory.
+
+            ### Requirements
+            - Moodle 4.4+ (MOODLE_404_STABLE or later)
+            - PHP 8.1+
+
+            ### Notes
+            - Behat tests are excluded from the release zip to keep the package lightweight.
+            - Automatic publishing to moodle.org/plugins is not yet configured.
+          files: ${{ env.ZIP_NAME }}
+          draft: false
+          prerelease: ${{ contains(steps.tag.outputs.tag, 'alpha') || contains(steps.tag.outputs.tag, 'beta') || contains(steps.tag.outputs.tag, 'rc') }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
