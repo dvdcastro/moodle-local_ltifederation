@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="local/ltifederation/db" VERSION="20260409" COMMENT="XMLDB file for Moodle local/ltifederation"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="local_ltifed_providers" COMMENT="LTI Federation remote provider connections">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="label" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Human-readable label for this provider"/>
+        <FIELD NAME="providerurl" TYPE="text" NOTNULL="true" SEQUENCE="false" COMMENT="Base URL of the remote Moodle provider"/>
+        <FIELD NAME="wstoken" TYPE="text" NOTNULL="true" SEQUENCE="false" COMMENT="Web service token (encrypted) for the provider catalog WS"/>
+        <FIELD NAME="autosync" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Whether to automatically sync the catalog"/>
+        <FIELD NAME="lastsync" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Timestamp of last successful sync"/>
+        <FIELD NAME="syncstatus" TYPE="char" LENGTH="20" NOTNULL="false" SEQUENCE="false" COMMENT="Status of last sync: ok or error"/>
+        <FIELD NAME="syncmessage" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Message from last sync (error details)"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="local_ltifed_catalog_cache" COMMENT="Cached LTI tool catalog entries from remote providers">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="providerid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="FK to local_ltifed_providers.id"/>
+        <FIELD NAME="remoteid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="The tool id on the remote provider"/>
+        <FIELD NAME="remoteuuid" TYPE="char" LENGTH="36" NOTNULL="true" SEQUENCE="false" COMMENT="The tool uuid on the remote provider"/>
+        <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="description" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="coursefullname" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="ltiversion" TYPE="char" LENGTH="15" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="registration_url" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Dynamic registration URL on the provider"/>
+        <FIELD NAME="registration_token" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" COMMENT="Token for dynamic registration"/>
+        <FIELD NAME="logo_url" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="remotestatus" TYPE="int" LENGTH="1" NOTNULL="false" DEFAULT="0" SEQUENCE="false" COMMENT="0=active, 1=removed from provider"/>
+        <FIELD NAME="lti_type_id" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Local lti_types.id after registration"/>
+        <FIELD NAME="regstate" TYPE="char" LENGTH="20" NOTNULL="true" DEFAULT="none" SEQUENCE="false" COMMENT="none, pending, registered, error"/>
+        <FIELD NAME="regerror" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Error message if regstate=error"/>
+        <FIELD NAME="timefetched" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="When this entry was last fetched"/>
+        <FIELD NAME="timeregistered" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="When the tool was registered locally"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="providerid" TYPE="foreign" FIELDS="providerid" REFTABLE="local_ltifed_providers" REFFIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="providerid_remoteuuid" UNIQUE="true" FIELDS="providerid, remoteuuid"/>
+      </INDEXES>
+    </TABLE>
+  </TABLES>
+</XMLDB>
